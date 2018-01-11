@@ -1,0 +1,17 @@
+#!/bin/bash
+systemctl stop lightdm.service
+
+echo 0 > /sys/class/vtconsole/vtcon0/bind || echo "console0 already unbound"
+echo 0 > /sys/class/vtconsole/vtcon1/bind || echo "console1 already unbound"
+echo efi-framebuffer.0 > /sys/bus/platform/drivers/efi-framebuffer/unbind || echo "efi FB already unbound"
+
+echo -n "0000:01:00.0" > /sys/bus/pci/drivers/amdgpu/unbind || echo "Failed to unbind gpu from amdgpu"
+echo -n "0000:01:00.1" > /sys/bus/pci/drivers/snd_hda_intel/unbind || echo "Failed to unbind hdmi audio in gpu"
+echo -n "0000:00:14.2" > /sys/bus/pci/drivers/snd_hda_intel/unbind || echo "Failed to unbind audio"
+
+modprobe vfio-pci
+#tell vfio-pci that it takes care of gpu
+echo -n "1002 67df" > /sys/bus/pci/drivers/vfio-pci/new_id
+echo -n "1002 aaf0" > /sys/bus/pci/drivers/vfio-pci/new_id
+echo -n "1002 4383" > /sys/bus/pci/drivers/vfio-pci/new_id
+

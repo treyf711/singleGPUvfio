@@ -12,6 +12,7 @@ qemu-system-x86_64 \
     -enable-kvm \
     -M pc,accel=kvm \
     -m 8192 \
+    -mem-path /dev/hugepages \
     -boot c \
     -drive file=/mnt/storage/VM/win10.img,format=raw,if=virtio \
     -drive file=/dev/sdb2,format=raw,if=virtio \

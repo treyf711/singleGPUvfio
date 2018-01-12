@@ -7,7 +7,7 @@ do
     echo  performance > /sys/devices/system/cpu/cpu$i/cpufreq/scaling_governor
 done
 
-chrt -r 1 taskset -c 4-7 qemu-system-x86_64 \
+qemu-system-x86_64 \
     -display none \
     -enable-kvm \
     -M pc,accel=kvm \
@@ -16,7 +16,7 @@ chrt -r 1 taskset -c 4-7 qemu-system-x86_64 \
     -drive file=/mnt/storage/VM/win10.img,format=raw,if=virtio \
     -drive file=/dev/sdb2,format=raw,if=virtio \
     -cpu host,kvm=off,hv_relaxed,hv_spinlocks=0x1fff,hv_vapic,hv_time \
-    -smp 4,sockets=1,cores=4,threads=1 \
+    -smp 8,sockets=1,cores=4,threads=2 \
     -rtc base=localtime,driftfix=slew \
     -device ioh3420,bus=pci.0,addr=1c.0,multifunction=on,port=1,chassis=1,id=root \
     -device vfio-pci,host=01:00.0,bus=root,addr=00.0,romfile=/mnt/storage/VM/Ellesmere.rom,multifunction=on,x-vga=on -vga none \

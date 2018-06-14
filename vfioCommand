@@ -1,5 +1,5 @@
 #!/bin/bash
-systemctl stop lightdm.service
+systemctl isolate multi-user.target
 
 echo 0 > /sys/class/vtconsole/vtcon0/bind || echo "console0 already unbound"
 echo 0 > /sys/class/vtconsole/vtcon1/bind || echo "console1 already unbound"

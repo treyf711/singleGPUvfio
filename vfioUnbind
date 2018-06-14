@@ -13,4 +13,4 @@ echo -n 0000:01:00.0 > /sys/bus/pci/drivers/amdgpu/bind || echo "Failed to bind 
 echo -n 0000:01:00.1 > /sys/bus/pci/drivers/snd_hda_intel/bind || echo "Failed to bind nvidia hdmi audio"
 echo -n 0000:00:14.2 > /sys/bus/pci/drivers/snd_hda_intel/bind || echo "Failed to bind audio"
 
-systemctl restart lightdm.service
+systemctl isolate graphical.target

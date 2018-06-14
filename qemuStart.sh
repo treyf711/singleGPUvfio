@@ -2,27 +2,16 @@
 keyboard="04d9:a0cd"
 mouse="045e:0023"
 
-for i in {4..7}
-do
-    echo  performance > /sys/devices/system/cpu/cpu$i/cpufreq/scaling_governor
-done
-
+export QEMU_AUDIO_DRV=alsa QEMU_AUDIO_TIMER_PERIOD=0
 qemu-system-x86_64 \
-    -display none \
-    -enable-kvm \
-    -M pc,accel=kvm \
-    -m 8192 \
-    -mem-path /dev/hugepages \
-    -boot c \
-    -drive file=/mnt/storage/VM/win10.img,format=raw,if=virtio \
-    -drive file=/dev/sdb2,format=raw,if=virtio \
-    -cpu host,kvm=off,hv_relaxed,hv_spinlocks=0x1fff,hv_vapic,hv_time \
-    -smp 8,sockets=1,cores=4,threads=2 \
-    -rtc base=localtime,driftfix=slew \
-    -device ioh3420,bus=pci.0,addr=1c.0,multifunction=on,port=1,chassis=1,id=root \
-    -device vfio-pci,host=01:00.0,bus=root,addr=00.0,romfile=/mnt/storage/VM/Ellesmere.rom,multifunction=on,x-vga=on -vga none \
-    -device vfio-pci,host=01:00.1,bus=root,addr=00.1 \
-    -device vfio-pci,host=00:14.2 \
-    -netdev bridge,id=bridger \
-    -device virtio-net-pci,netdev=bridger \
-    -usbdevice host:${keyboard} -usbdevice host:${mouse} 
+    -enable-kvm -M q35 -m 4096 -cpu host -smp 2,sockets=1,cores=2,threads=1 \
+    -bios /usr/share/qemu/bios.bin -vga none \
+    -device ioh3420,bus=pcie.0,addr=1c.0,multifunction=on,port=1,chassis=1,id=root.1 \
+    -device piix4-ide,bus=pcie.0,id=piix4-ide \
+    -device vfio-pci,host=09:00.0,bus=root.1,addr=00.0,multifunction=on,x-vga=on,romfile=/storage/VM/Ellesmere.rom \
+    -device vfio-pci,host=09:00.1,bus=pcie.0 \
+    -usb -usbdevice host:${keyboard} -usbdevice host:${mouse} \
+    -soundhw ac97 \
+    -drive file=/storage/VM/win10.img,id=disk,format=raw -device ide-hd,bus=piix4-ide.0,drive=disk \
+    -drive file=/storage/VM/win10.iso,id=isocd -device ide-cd,bus=piix4-ide.1,drive=isocd \
+;

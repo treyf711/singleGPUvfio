@@ -1,8 +1,13 @@
 ```
 #!/bin/bash
+```
+One trick that I saw was using variables set equal to usb devices. As someone with multiple keyboards, this made my life easier If you ever need to switch.
+```
 keyboard="04d9:a0cd"
 mouse="045e:0023"
 ```
+
+I orginally gave my machine 4GB of memory and only 2 CPUs because I was not pl.anning on doing any big gaming.
 ```
 export QEMU_AUDIO_DRV=alsa QEMU_AUDIO_TIMER_PERIOD=0
 qemu-system-x86_64 \

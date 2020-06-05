@@ -1,7 +1,9 @@
+```
 #!/bin/bash
 keyboard="04d9:a0cd"
 mouse="045e:0023"
-
+```
+```
 export QEMU_AUDIO_DRV=alsa QEMU_AUDIO_TIMER_PERIOD=0
 qemu-system-x86_64 \
     -enable-kvm -M q35 -m 4096 -cpu host -smp 2,sockets=1,cores=2,threads=1 \
@@ -15,3 +17,4 @@ qemu-system-x86_64 \
     -drive file=/storage/VM/win10.img,id=disk,format=raw -device ide-hd,bus=piix4-ide.0,drive=disk \
     -drive file=/storage/VM/win10.iso,id=isocd -device ide-cd,bus=piix4-ide.1,drive=isocd \
 ;
+```
